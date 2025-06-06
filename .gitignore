@@ -22,6 +22,19 @@ share/python-wheels/
 *.egg
 MANIFEST
 
+# Windows
+*.lnk
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+*.cab
+*.msi
+*.msix
+*.msm
+*.msp
+*.exe
+
 # PyInstaller
 *.manifest
 *.spec

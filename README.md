@@ -15,6 +15,8 @@ pip install -r requirements.txt
 ```
 
 ### Schnelles Setup
+
+#### Linux/macOS
 ```bash
 # Umgebungsvariable setzen und Anwendungen starten
 ./setup.sh
@@ -22,6 +24,20 @@ pip install -r requirements.txt
 # Oder manuell Umgebungsvariable setzen
 export MONGODB_URI='mongodb://192.168.1.157:27017/'
 ```
+
+#### Windows
+```cmd
+# Command Prompt
+setup.bat
+
+# PowerShell
+.\setup.ps1
+
+# Oder manuell (CMD)
+set MONGODB_URI=mongodb://192.168.1.157:27017/
+```
+
+Siehe auch: [WINDOWS_SETUP.md](WINDOWS_SETUP.md) für detaillierte Windows-Anweisungen.
 
 ## 1. ODM Erklärung
 
