@@ -43,54 +43,54 @@ class DatabaseExplorer:
             databases = self.list_databases()
             
             if not databases:
-                print("No Database")
-                input("Press any button to return")
+                print("Keine Datenbanken")
+                input("Beliebige Taste drücken")
                 continue
             
-            print("Databases")
+            print("\nDatenbanken:")
             for db in databases:
                 print(f" - {db}")
             
-            db_name = input("\nSelect Database: ").strip()
+            db_name = input("\nDatenbank auswählen: ").strip()
             
             if db_name not in databases:
-                print(f"Database '{db_name}' not found")
+                print(f"Datenbank '{db_name}' nicht gefunden")
                 continue
             
             collections = self.list_collections(db_name)
             
             if not collections:
-                print("No Collections")
-                input("Press any button to return")
+                print("Keine Collections")
+                input("Beliebige Taste drücken")
                 continue
             
             print(f"\n{db_name}")
-            print("\nCollections")
+            print("\nCollections:")
             for col in collections:
                 print(f" - {col}")
             
-            col_name = input("\nSelect Collection: ").strip()
+            col_name = input("\nCollection auswählen: ").strip()
             
             if col_name not in collections:
-                print(f"Collection '{col_name}' not found")
+                print(f"Collection '{col_name}' nicht gefunden")
                 continue
             
             documents = self.list_documents(db_name, col_name)
             
             if not documents:
-                print("No Documents")
-                input("Press any button to return")
+                print("Keine Dokumente")
+                input("Beliebige Taste drücken")
                 continue
             
             print(f"\n{db_name}.{col_name}")
-            print("\nDocuments")
+            print("\nDokumente:")
             for doc_id in documents:
                 print(f" - {doc_id}")
             
-            doc_id = input("\nSelect Document: ").strip()
+            doc_id = input("\nDokument auswählen: ").strip()
             
             if doc_id not in documents:
-                print(f"Document '{doc_id}' not found")
+                print(f"Dokument '{doc_id}' nicht gefunden")
                 continue
             
             document = self.get_document(db_name, col_name, doc_id)
@@ -99,7 +99,7 @@ class DatabaseExplorer:
             print()
             self.display_document(document)
             
-            print("\nPress any button to return")
+            print("\nBeliebige Taste drücken")
             input()
 
 def main():
