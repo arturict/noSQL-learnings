@@ -18,10 +18,10 @@ setup.bat
 ### 3. Manual Setup
 ```cmd
 # Umgebungsvariable für die aktuelle Session setzen
-set MONGODB_URI=mongodb://192.168.1.157:27017/
+set MONGODB_URI=mongodb://localhost:27017/
 
 # Oder permanent für den Benutzer (als Administrator):
-setx MONGODB_URI "mongodb://192.168.1.157:27017/" /M
+setx MONGODB_URI "mongodb://localhost:27017/" /M
 ```
 
 ## Voraussetzungen
@@ -36,7 +36,7 @@ pip install -r requirements.txt
 ```
 
 ### MongoDB Server
-- MongoDB Server muss auf 192.168.1.157:27017 laufen
+- MongoDB Server muss auf localhost:27017 laufen
 - Oder Connection String in den Setup-Dateien anpassen
 
 ## Anwendungen starten

@@ -103,7 +103,7 @@ class DatabaseExplorer:
             input()
 
 def main():
-    connection_string = os.getenv('MONGODB_URI', 'mongodb://192.168.1.157:27017/')
+    connection_string = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
     
     explorer = DatabaseExplorer(connection_string)
     explorer.run()

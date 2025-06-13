@@ -28,7 +28,7 @@ def demonstrate_mongodb_connection():
         return True
     else:
         print("✗ MONGODB_URI nicht gesetzt")
-        print("Setze: export MONGODB_URI='mongodb://192.168.1.157:27017/'")
+        print("Setze: export MONGODB_URI='mongodb://localhost:27017/'")
         return False
 
 def main():

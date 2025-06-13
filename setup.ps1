@@ -1,7 +1,7 @@
 # MongoDB M165 Project Setup for Windows PowerShell
 # =================================================
 
-$env:MONGODB_URI = "mongodb://192.168.1.157:27017/"
+$env:MONGODB_URI = "mongodb://localhost:27017/"
 
 Write-Host "MongoDB M165 Project Setup" -ForegroundColor Green
 Write-Host "=========================="
@@ -16,7 +16,7 @@ Write-Host "4. python power_monitor.py        - System monitoring"
 Write-Host "5. python power_grapher.py        - Monitoring graphs"
 Write-Host ""
 Write-Host "To make environment variable persistent:" -ForegroundColor Cyan
-Write-Host "[Environment]::SetEnvironmentVariable('MONGODB_URI', 'mongodb://192.168.1.157:27017/', 'User')" -ForegroundColor Gray
+Write-Host "[Environment]::SetEnvironmentVariable('MONGODB_URI', 'mongodb://localhost:27017/', 'User')" -ForegroundColor Gray
 Write-Host ""
 
 $choice = Read-Host "Start an application? (1-5 or n)"

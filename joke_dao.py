@@ -35,7 +35,7 @@ class Joke:
 class JokeDAO:
     def __init__(self, connection_string=None):
         if connection_string is None:
-            connection_string = os.getenv('MONGODB_URI', 'mongodb://192.168.1.157:27017/')
+            connection_string = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
         
         self.client = MongoClient(connection_string)
         self.db = self.client['jokes_db']
