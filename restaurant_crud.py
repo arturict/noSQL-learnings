@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 from pymongo import MongoClient
+from bson import ObjectId
 from datetime import datetime
 import re
 import os
@@ -9,7 +10,23 @@ class RestaurantManager:
         self.client = MongoClient(connection_string)
         self.db = self.client[database_name]
         self.collection = self.db[collection_name]
+        self._ensure_geo_index()
         print(f"Verbunden mit {database_name}.{collection_name}")
+    
+    def _ensure_geo_index(self):
+        """Ensure 2dsphere index exists for geospatial queries"""
+        try:
+            existing_indexes = list(self.collection.list_indexes())
+            has_geo_index = any(
+                "2dsphere" in str(index.get("key", {})) 
+                for index in existing_indexes
+            )
+            
+            if not has_geo_index:
+                self.collection.create_index([("address.coord", "2dsphere")])
+                print("✓ 2dsphere Index für Geo-Queries erstellt")
+        except Exception as e:
+            print(f"⚠ Geo-Index Warnung: {e}")
     
     def get_unique_boroughs(self):
         boroughs = self.collection.distinct("borough")
@@ -40,23 +57,34 @@ class RestaurantManager:
         
         target_coords = target["address"]["coord"]
         
-        pipeline = [
-            {
-                "$geoNear": {
-                    "near": {
-                        "type": "Point",
-                        "coordinates": target_coords
-                    },
-                    "distanceField": "distance",
-                    "spherical": True,
-                    "query": {"name": {"$ne": target_restaurant_name}}
-                }
-            },
-            {"$limit": 1}
-        ]
-        
-        result = list(self.collection.aggregate(pipeline))
-        return result[0] if result else None
+        try:
+            pipeline = [
+                {
+                    "$geoNear": {
+                        "near": {
+                            "type": "Point",
+                            "coordinates": target_coords
+                        },
+                        "distanceField": "distance",
+                        "spherical": True,
+                        "query": {"name": {"$ne": target_restaurant_name}}
+                    }
+                },
+                {"$limit": 1}
+            ]
+            
+            result = list(self.collection.aggregate(pipeline))
+            return result[0] if result else None
+            
+        except Exception as e:
+            print(f"⚠ Geo-Query Fehler: {e}")
+            print("Verwende einfache Suche als Fallback...")
+            
+            # Fallback: Find any restaurant that's not the target
+            fallback = self.collection.find_one({"name": {"$ne": target_restaurant_name}})
+            if fallback:
+                fallback["distance"] = "Unbekannt (Fallback-Modus)"
+            return fallback
     
     def search_restaurants(self, name_query="", cuisine_query=""):
         query = {}
@@ -163,16 +191,77 @@ def main():
         
         elif choice == "5":
             print("\nBewertung zu Restaurant hinzufügen")
-            restaurant_id = input("Restaurant ID eingeben: ").strip()
-            score = input("Score eingeben (0-100): ").strip()
+            print("Methode wählen:")
+            print("1. Restaurant ID eingeben")
+            print("2. Restaurant suchen und bewerten")
             
-            if score.isdigit():
-                score = int(score)
-                if 0 <= score <= 100:
-                    if rm.add_rating(restaurant_id, score):
-                        print("Bewertung erfolgreich hinzugefügt!")
+            method = input("Methode (1-2): ").strip()
+            
+            if method == "1":
+                restaurant_id = input("Restaurant ID eingeben: ").strip()
+                try:
+                    # Convert string to ObjectId
+                    if len(restaurant_id) == 24:  # Standard ObjectId length
+                        object_id = ObjectId(restaurant_id)
                     else:
-                        print("Bewertung hinzufügen fehlgeschlagen")
+                        print("Ungültige ObjectId Format (muss 24 Zeichen haben)")
+                        continue
+                        
+                    score = input("Score eingeben (0-100): ").strip()
+                    
+                    if score.isdigit():
+                        score = int(score)
+                        if 0 <= score <= 100:
+                            if rm.add_rating(object_id, score):
+                                print("Bewertung erfolgreich hinzugefügt!")
+                            else:
+                                print("Bewertung hinzufügen fehlgeschlagen - Restaurant nicht gefunden")
+                        else:
+                            print("Score muss zwischen 0 und 100 liegen")
+                    else:
+                        print("Ungültiger Score")
+                except Exception as e:
+                    print(f"Fehler: {e}")
+                    
+            elif method == "2":
+                name_query = input("Restaurant Name (oder leer lassen): ").strip()
+                cuisine_query = input("Küche (oder leer lassen): ").strip()
+                
+                results = rm.search_restaurants(name_query, cuisine_query)
+                
+                if not results:
+                    print("Keine Restaurants gefunden")
+                    continue
+                
+                print(f"\n{len(results)} Restaurant(s) gefunden:")
+                for i, restaurant in enumerate(results[:10], 1):  # Limit to 10 results
+                    print(f"{i}. {restaurant['name']} ({restaurant['cuisine']})")
+                    print(f"   Stadtbezirk: {restaurant['borough']}")
+                    print(f"   ID: {restaurant['_id']}")
+                
+                choice_num = input("\nNummer eingeben um Restaurant zu bewerten: ").strip()
+                if choice_num.isdigit():
+                    idx = int(choice_num) - 1
+                    if 0 <= idx < len(results):
+                        selected_restaurant = results[idx]
+                        score = input("Score eingeben (0-100): ").strip()
+                        if score.isdigit():
+                            score = int(score)
+                            if 0 <= score <= 100:
+                                if rm.add_rating(selected_restaurant['_id'], score):
+                                    print(f"Bewertung erfolgreich zu {selected_restaurant['name']} hinzugefügt!")
+                                else:
+                                    print("Bewertung hinzufügen fehlgeschlagen")
+                            else:
+                                print("Score muss zwischen 0 und 100 liegen")
+                        else:
+                            print("Ungültiger Score")
+                    else:
+                        print("Ungültige Auswahl")
+                else:
+                    print("Ungültige Eingabe")
+            else:
+                print("Ungültige Methode")
         
         elif choice == "6":
             print("Auf Wiedersehen!")

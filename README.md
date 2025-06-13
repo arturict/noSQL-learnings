@@ -19,7 +19,7 @@ pip install -r requirements.txt
 #### Linux/macOS
 ```bash
 # Umgebungsvariable setzen und Anwendungen starten
-./setup.sh
+
 
 # Oder manuell Umgebungsvariable setzen
 export MONGODB_URI='mongodb://192.168.1.157:27017/'
