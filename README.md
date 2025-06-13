@@ -6,7 +6,7 @@ Dieses Projekt implementiert verschiedene MongoDB Datenbankoperationen als Teil 
 
 ### Voraussetzungen
 - Python 3.x
-- MongoDB Server läuft auf `192.168.1.157:27017`
+- MongoDB Server läuft auf `localhost:27017`
 - Python Bibliotheken (siehe requirements.txt)
 
 ### Installation
@@ -22,7 +22,7 @@ pip install -r requirements.txt
 ./setup.sh
 
 # Oder manuell Umgebungsvariable setzen
-export MONGODB_URI='mongodb://192.168.1.157:27017/'
+export MONGODB_URI='mongodb://localhost:27017/'
 ```
 
 #### Windows
@@ -34,7 +34,7 @@ setup.bat
 .\setup.ps1
 
 # Oder manuell (CMD)
-set MONGODB_URI=mongodb://192.168.1.157:27017/
+set MONGODB_URI=mongodb://localhost:27017/
 ```
 
 Siehe auch: [WINDOWS_SETUP.md](WINDOWS_SETUP.md) für detaillierte Windows-Anweisungen.
@@ -130,7 +130,7 @@ Das `environment_demo.py` Skript demonstriert die sichere Handhabung von Datenba
 ### Verwendung:
 ```bash
 # Umgebungsvariable setzen
-export MONGODB_URI='mongodb://192.168.1.157:27017/'
+export MONGODB_URI='mongodb://localhost:27017/'
 
 # Umgebungsvariablen Funktionalität testen
 python environment_demo.py
@@ -139,7 +139,7 @@ python environment_demo.py
 ### Persistente Umgebungsvariablen:
 Zu `~/.bashrc` oder `~/.zshrc` hinzufügen:
 ```bash
-export MONGODB_URI='mongodb://192.168.1.157:27017/'
+export MONGODB_URI='mongodb://localhost:27017/'
 ```
 
 ## 5. Power Statistiken Überwachung
@@ -350,7 +350,7 @@ m165_adrian/
 
 ### Before (Insecure):
 ```python
-connection_string = "mongodb://192.168.1.157:27017/"  # ❌ Hardcoded
+connection_string = "mongodb://localhost:27017/"  # ❌ Hardcoded
 ```
 
 ### After (Secure):

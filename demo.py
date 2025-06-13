@@ -2,7 +2,7 @@
 from pymongo import MongoClient
 
 def test_connection():
-    connection_string = "mongodb://192.168.1.157:27017/"
+    connection_string = "mongodb://localhost:27017/"
     
     client = MongoClient(connection_string)
     server_info = client.server_info()
@@ -14,7 +14,7 @@ def test_connection():
     return True
 
 def test_basic_operations():
-    connection_string = "mongodb://192.168.1.157:27017/"
+    connection_string = "mongodb://localhost:27017/"
     
     client = MongoClient(connection_string)
     test_db = client['test_database']

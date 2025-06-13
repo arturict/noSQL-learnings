@@ -87,7 +87,7 @@ class RestaurantManager:
         return result.modified_count > 0
 
 def main():
-    connection_string = os.getenv('MONGODB_URI', 'mongodb://192.168.1.157:27017/')
+    connection_string = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
     
     rm = RestaurantManager(connection_string)
     

@@ -47,7 +47,7 @@ class PowerMonitor:
     def __init__(self, connection_string=None, database_name="system_monitoring", 
                  collection_name="power_stats", max_logs=10000):
         if connection_string is None:
-            connection_string = os.getenv('MONGODB_URI', 'mongodb://192.168.1.157:27017/')
+            connection_string = os.getenv('MONGODB_URI', 'mongodb://localhost:27017/')
         
         self.max_logs = max_logs
         self.client = MongoClient(connection_string)

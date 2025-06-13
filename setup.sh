@@ -1,6 +1,6 @@
 #!/bin/bash
 
-export MONGODB_URI='mongodb://192.168.1.157:27017/'
+export MONGODB_URI='mongodb://localhost:27017/'
 
 echo "MongoDB M165 Project Setup"
 echo "=========================="
@@ -14,7 +14,7 @@ echo "4. python power_monitor.py        - System monitoring"
 echo "5. python power_grapher.py        - Monitoring graphs"
 echo ""
 echo "To make environment variable persistent, add this to ~/.bashrc or ~/.zshrc:"
-echo "export MONGODB_URI='mongodb://192.168.1.157:27017/'"
+echo "export MONGODB_URI='mongodb://localhost:27017/'"
 echo ""
 
 read -p "Start an application? (1-5 or n): " choice
