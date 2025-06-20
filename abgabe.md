@@ -429,7 +429,7 @@ Downloaded Dateien:
 
 ---
 
-# Aufgabe 8: Neighborhoods Polygon-Visualisierung ⭐
+# Aufgabe 8: Neighborhoods Polygon-Visualisierung 
 [Quellcode zu Aufgabe 8: polygon_visualizer.py](./polygon_visualizer.py)
 
 ## Übersicht
